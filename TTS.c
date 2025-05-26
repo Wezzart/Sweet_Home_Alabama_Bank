@@ -43,8 +43,8 @@ void inputPassword(char password[]){
     
 }
 
-bool regis(usr users[],int *userCount){
-    if (*userCount >= MAX_USER)
+bool regis(usr users[],int *jumlahUser){
+    if (*jumlahUser >= MAX_USER)
     {
         return 0;
     }
@@ -55,7 +55,7 @@ bool regis(usr users[],int *userCount){
     fgets(username,MAX_LENGTH,stdin);
     username[strcspn(username, "\n")] = '\0';
     
-    for (int i = 0; i < *userCount; i++)
+    for (int i = 0; i < *jumlahUser; i++)
     {
         if (strcmp(users[i].username, username) == 0)
         {
@@ -69,14 +69,14 @@ bool regis(usr users[],int *userCount){
     inputPassword(password);
     password[strcspn(password, "\n")] = '\0';
 
-    strcpy(users[*userCount].username, username);
-    strcpy(users[*userCount].password, password);
-    (*userCount)++;
+    strcpy(users[*jumlahUser].username, username);
+    strcpy(users[*jumlahUser].password, password);
+    (*jumlahUser)++;
 
     return 1;
 }
 
-bool login(usr users[], int *userCount){
+bool login(usr users[], int *jumlahUser){
     char username[MAX_LENGTH];
     char password[MAX_LENGTH];
     printf("Masukkan username: ");
@@ -85,7 +85,7 @@ bool login(usr users[], int *userCount){
 
     printf("Masukkan password: ");
     inputPassword(password);
-    for (int i = 0; i < *userCount; i++)
+    for (int i = 0; i < *jumlahUser; i++)
     {
         if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0)
         {
@@ -93,20 +93,46 @@ bool login(usr users[], int *userCount){
         }
     }
     return 0;
-    
 }
 
 int main(){
     usr users[MAX_USER];
-    int userCount = 0;
-    int i = 0;
+    int jumlahUser = 0;
     int milih;
-    while (i <=5)
-    {
-        regis(users, &userCount);
-        i++;
+    ulang:
+        printf("---Menu Login---\n");
+        printf("1. Register\n");
+        printf("2. Login\n");
+        printf("3. Exit\n");
+        printf("Pilih Menu: ");
+        if(scanf("%d", &milih) == 0)
+        {
+            getchar();
+            printf("Silahkan masukkan angka\n");
+            goto ulang;
+        }
+        getchar();
+        switch (milih)
+        {
+        case 1:
+            regis(users, &jumlahUser);
+            /* code */
+            break;
+        case 2:
+           if(login(users, &jumlahUser))
+           {
+            printf("Success");
+           }
+           else{
+            printf("Gagal");
+           }
+            system("pause");
+            break;
+        case 3:
+
+        default:
+            break;
+        }
         /* code */
-    }
-    
-     return 0;
+return 0;
 }
