@@ -43,8 +43,8 @@ void inputPassword(char password[]){
     
 }
 
-bool regis(usr users[],int *userCount){
-    if (*userCount >= MAX_USER)
+bool regis(usr users[],int *jumlahUser){
+    if (*jumlahUser >= MAX_USER)
     {
         return 0;
     }
@@ -55,7 +55,7 @@ bool regis(usr users[],int *userCount){
     fgets(username,MAX_LENGTH,stdin);
     username[strcspn(username, "\n")] = '\0';
     
-    for (int i = 0; i < *userCount; i++)
+    for (int i = 0; i < *jumlahUser; i++)
     {
         if (strcmp(users[i].username, username) == 0)
         {
@@ -69,14 +69,14 @@ bool regis(usr users[],int *userCount){
     inputPassword(password);
     password[strcspn(password, "\n")] = '\0';
 
-    strcpy(users[*userCount].username, username);
-    strcpy(users[*userCount].password, password);
-    (*userCount)++;
+    strcpy(users[*jumlahUser].username, username);
+    strcpy(users[*jumlahUser].password, password);
+    (*jumlahUser)++;
 
     return 1;
 }
 
-bool login(usr users[], int *userCount){
+bool login(usr users[], int *jumlahUser){
     char username[MAX_LENGTH];
     char password[MAX_LENGTH];
     printf("Masukkan username: ");
@@ -85,7 +85,7 @@ bool login(usr users[], int *userCount){
 
     printf("Masukkan password: ");
     inputPassword(password);
-    for (int i = 0; i < *userCount; i++)
+    for (int i = 0; i < *jumlahUser; i++)
     {
         if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0)
         {
@@ -98,7 +98,7 @@ bool login(usr users[], int *userCount){
 
 int menulogin(){
     usr users[MAX_USER];
-    int userCount = 0;
+    int jumlahUser = 0;
     int i = 0;
     int milih;
     bool ulang = 1;
@@ -121,7 +121,7 @@ int menulogin(){
     switch (milih)
     {
     case 1:
-        if (regis(users, &userCount)) {
+        if (regis(users, &jumlahUser)) {
                 printf("Registrasi User Baru Berhasil\n");
                 system("pause");
                 } else {
@@ -131,7 +131,7 @@ int menulogin(){
         break;
 
     case 2:
-        if (login(users, &userCount)) {
+        if (login(users, &jumlahUser)) {
                 printf("Login berhasil\n");
                 system("pause");
                 ulang = 0;
