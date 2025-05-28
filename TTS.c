@@ -156,5 +156,6 @@ int menulogin(){
 int main()
 {
     menulogin();
+    printf("Theo Domok");
     return 0;
 }
