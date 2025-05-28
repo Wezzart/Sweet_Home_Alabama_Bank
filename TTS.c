@@ -156,5 +156,6 @@ int menulogin(){
 int main()
 {
     menulogin();
+    printf("Theodomok");
     return 0;
 }
