@@ -43,8 +43,8 @@ void inputPassword(char password[]){
     
 }
 
-bool regis(usr users[],int *jumlahUser){
-    if (*jumlahUser >= MAX_USER)
+bool regis(usr users[],int *userCount){
+    if (*userCount >= MAX_USER)
     {
         return 0;
     }
@@ -55,7 +55,7 @@ bool regis(usr users[],int *jumlahUser){
     fgets(username,MAX_LENGTH,stdin);
     username[strcspn(username, "\n")] = '\0';
     
-    for (int i = 0; i < *jumlahUser; i++)
+    for (int i = 0; i < *userCount; i++)
     {
         if (strcmp(users[i].username, username) == 0)
         {
@@ -69,14 +69,14 @@ bool regis(usr users[],int *jumlahUser){
     inputPassword(password);
     password[strcspn(password, "\n")] = '\0';
 
-    strcpy(users[*jumlahUser].username, username);
-    strcpy(users[*jumlahUser].password, password);
-    (*jumlahUser)++;
+    strcpy(users[*userCount].username, username);
+    strcpy(users[*userCount].password, password);
+    (*userCount)++;
 
     return 1;
 }
 
-bool login(usr users[], int *jumlahUser){
+bool login(usr users[], int *userCount){
     char username[MAX_LENGTH];
     char password[MAX_LENGTH];
     printf("Masukkan username: ");
@@ -85,7 +85,7 @@ bool login(usr users[], int *jumlahUser){
 
     printf("Masukkan password: ");
     inputPassword(password);
-    for (int i = 0; i < *jumlahUser; i++)
+    for (int i = 0; i < *userCount; i++)
     {
         if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0)
         {
@@ -98,13 +98,13 @@ bool login(usr users[], int *jumlahUser){
 
 int menulogin(){
     usr users[MAX_USER];
-    int jumlahUser = 0;
+    int userCount = 0;
     int i = 0;
     int milih;
     bool ulang = 1;
     while (ulang)
     {
-    system("cls");
+        system("cls");
     printf("\n--- Menu ---\n");
     printf("1. Register\n");
     printf("2. Login\n");
@@ -115,12 +115,13 @@ int menulogin(){
         printf("Input salah, silahkan input 1-3\n");
         milih = 0;
         system("pause");
+        getchar();
     }
-    while(getchar() != '\n');
+    getchar(); //
     switch (milih)
     {
     case 1:
-        if (regis(users, &jumlahUser)) {
+        if (regis(users, &userCount)) {
                 printf("Registrasi User Baru Berhasil\n");
                 system("pause");
                 } else {
@@ -130,7 +131,7 @@ int menulogin(){
         break;
 
     case 2:
-        if (login(users, &jumlahUser)) {
+        if (login(users, &userCount)) {
                 printf("Login berhasil\n");
                 system("pause");
                 ulang = 0;
@@ -143,7 +144,6 @@ int menulogin(){
     case 3:
         printf("Keluar dari program\n");
         ulang = 0;
-        exit(1);
         break;
     default:
         break;
