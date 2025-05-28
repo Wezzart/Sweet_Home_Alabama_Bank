@@ -104,7 +104,7 @@ int menulogin(){
     bool ulang = 1;
     while (ulang)
     {
-        system("cls");
+    system("cls");
     printf("\n--- Menu ---\n");
     printf("1. Register\n");
     printf("2. Login\n");
@@ -115,9 +115,8 @@ int menulogin(){
         printf("Input salah, silahkan input 1-3\n");
         milih = 0;
         system("pause");
-        getchar();
     }
-    getchar(); //
+    while(getchar() != '\n');
     switch (milih)
     {
     case 1:
@@ -144,6 +143,7 @@ int menulogin(){
     case 3:
         printf("Keluar dari program\n");
         ulang = 0;
+        exit(1);
         break;
     default:
         break;
