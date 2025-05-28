@@ -156,10 +156,5 @@ int menulogin(){
 int main()
 {
     menulogin();
-
-    printf("imam mahdi");
-
-    printf("Theodomok");
-
     return 0;
 }
