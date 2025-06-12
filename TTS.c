@@ -9,12 +9,15 @@
 #define MAKS_NASABAH 100
 
 
-struct user {
+typedef struct {
     char username[MAX_LENGTH];
     char password[MAX_LENGTH];
-};
-typedef struct user usr;
+} usr;
 
+typedef struct {
+    char namaDeveloper[MAX_LENGTH];
+    int nim;
+} dev;
 
 typedef struct {
     char nama[50];
@@ -24,6 +27,21 @@ typedef struct {
 Nasabah daftarNasabah[MAKS_NASABAH];
 int jumlahNasabah = 0;
 
+void namaDev(){
+    dev inputData[] = {
+        {"Made Khanaya Dew Astawa", 672024085},
+        {"Theodorus Satria Dwipamudya", 672024086},
+        {"Driadiska Purba Hapsara", 672024088},
+        {"Priwiditya Lingga Mahendra", 672024101},
+        {"Mikhael Pasco Evanmada", 672024163}
+    };
+
+    for(int i = 0; i < 5; i++)
+    {
+        printf ("Developer %d \n Nama: %s \n NIM: %d \n", i+1, inputData[i].namaDeveloper, inputData[i].nim);
+
+    }
+}
 
 void inputPassword(char password[]) {
     int i = 0;
@@ -55,6 +73,7 @@ bool regis(usr users[], int *jumlahUser) {
     printf("Masukkan username baru: ");
     fgets(username, MAX_LENGTH, stdin);
     username[strcspn(username, "\n")] = '\0';
+    //strcspn menghitung panjang string sampai \n lalu mengganti indeks tersebut dengan \0
 
     for (int i = 0; i < *jumlahUser; i++) {
         if (strcmp(users[i].username, username) == 0) {
@@ -66,6 +85,7 @@ bool regis(usr users[], int *jumlahUser) {
     printf("Masukkan password baru: ");
     inputPassword(password);
     password[strcspn(password, "\n")] = '\0';
+    //strcspn menghitung panjang string sampai \n lalu mengganti indeks tersebut dengan \0
 
     strcpy(users[*jumlahUser].username, username);
     strcpy(users[*jumlahUser].password, password);
@@ -78,6 +98,7 @@ bool login(usr users[], int *jumlahUser) {
     printf("Masukkan username: ");
     fgets(username, MAX_LENGTH, stdin);
     username[strcspn(username, "\n")] = '\0';
+    //strcspn menghitung panjang string sampai \n lalu mengganti indeks tersebut dengan \0
 
     printf("Masukkan password: ");
     inputPassword(password);
@@ -215,7 +236,7 @@ int menulogin() {
     usr users[MAX_USER];
     int jumlahUser = 0;
     int milih;
-    bool ulang = true;
+    bool ulang = 1;
 
     while (ulang) {
         system("cls");
@@ -249,7 +270,7 @@ int menulogin() {
                     printf("Login berhasil\n");
                     system("pause");
                     system("cls");
-                    ulang = false;
+                    ulang = 0;
                     menuNasabah();
                 } else {
                     printf("Login gagal, username atau password salah.\n");
@@ -259,7 +280,9 @@ int menulogin() {
                 break;
             case 3:
                 printf("Keluar dari program\n");
-                ulang = false;
+                namaDev();
+                system("pause");
+                ulang = 0;
                 break;
             default:
                 printf("Pilihan tidak valid.\n");
