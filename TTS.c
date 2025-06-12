@@ -200,7 +200,7 @@ void menuNasabah() {
                 break;
             case 3:
             system("cls");
-            printf("|__________________________________________________|\n");
+            printf("____________________________________________________\n");
             printf("|Terimakasih Sudah Melakukan Transaksi Bersama Kami|\n");
             printf("|__________________________________________________|\n");
                 break;
