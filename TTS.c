@@ -73,7 +73,6 @@ bool regis(usr users[], int *jumlahUser) {
     printf("Masukkan username baru: ");
     fgets(username, MAX_LENGTH, stdin);
     username[strcspn(username, "\n")] = '\0';
-    //strcspn menghitung panjang string sampai \n lalu mengganti indeks tersebut dengan \0
 
     for (int i = 0; i < *jumlahUser; i++) {
         if (strcmp(users[i].username, username) == 0) {
@@ -85,7 +84,6 @@ bool regis(usr users[], int *jumlahUser) {
     printf("Masukkan password baru: ");
     inputPassword(password);
     password[strcspn(password, "\n")] = '\0';
-    //strcspn menghitung panjang string sampai \n lalu mengganti indeks tersebut dengan \0
 
     strcpy(users[*jumlahUser].username, username);
     strcpy(users[*jumlahUser].password, password);
@@ -98,7 +96,6 @@ bool login(usr users[], int *jumlahUser) {
     printf("Masukkan username: ");
     fgets(username, MAX_LENGTH, stdin);
     username[strcspn(username, "\n")] = '\0';
-    //strcspn menghitung panjang string sampai \n lalu mengganti indeks tersebut dengan \0
 
     printf("Masukkan password: ");
     inputPassword(password);
