@@ -160,6 +160,13 @@ void kalkulasiUang() {
         printf("|___________________________|\n");
     printf("Pilih Transaksi: ");
     scanf("%d", &pilih);
+           if (scanf("%d", &pilih) == 0) {
+            printf("Input salah, silahkan input 1-3\n");
+            pilih = 0;
+            system("pause");
+            
+           }
+           while (getchar() != '\n');
 
     switch (pilih) {
         case 1:
@@ -204,6 +211,12 @@ void menuNasabah() {
         printf("|___________________________|\n");
         printf("Masukkan PIlihan Anda : ");
         scanf("%d", &pilihan);
+        if (scanf("%d", &pilihan) == 0) {
+            printf("Input salah, silahkan input 1-3\n");
+            pilihan = 0;
+            system("pause");
+        }
+        while (getchar() != '\n');
 
         switch (pilihan) {
             case 1:
@@ -295,4 +308,5 @@ int menulogin() {
 int main() {
     menulogin();
     return 0;
+}
 }
