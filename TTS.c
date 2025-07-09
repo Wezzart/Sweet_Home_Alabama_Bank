@@ -7,6 +7,7 @@
 #define MAX_USER 100
 #define MAX_LENGTH 50
 #define MAKS_NASABAH 100
+#define FILE_NAME "userlogin.txt"
 
 
 typedef struct {
@@ -27,6 +28,43 @@ typedef struct {
 Nasabah daftarNasabah[MAKS_NASABAH];
 int jumlahNasabah = 0;
 
+void saveUserToFile(usr newUser) {
+    FILE *file = fopen(FILE_NAME, "a");
+    if (file == NULL) {
+        printf("Error: Tidak dapat membuka file untuk menyimpan data!\n");
+        return;
+    }
+    fprintf(file, "%s;%s\n", newUser.username, newUser.password);
+    fclose(file);
+}
+void LoadUserFromFile(usr users[], int *jumlahUser){
+    FILE *file = fopen(FILE_NAME,"r");
+    if(file == NULL){
+        printf("Tidak dapat membuka file untuk mengambil data \n");
+        system("pause");
+        return;
+    }
+    char line[MAX_LENGTH * 2 + 2];
+    *jumlahUser=0;
+    while (*jumlahUser < MAX_USER && fgets(line, sizeof(line), file) != NULL){
+        line[strcspn(line,"\n")] = 0;
+
+        char *username_load = strtok(line, ";");
+        char *password_load = strtok(NULL, ";");
+
+        if(username_load != NULL && password_load != NULL){
+            strcpy(users[*jumlahUser].username, username_load);
+            strcpy(users[*jumlahUser].password, password_load);
+            (*jumlahUser)++;
+        }
+        else{
+            printf("Satu baris data dalam file tidak lengkap, dilompati");
+        }
+    }
+
+    fclose(file);
+    
+}
 void namaDev(){
     dev inputData[] = {
         {"Made Khanaya Dew Astawa", 672024085},
@@ -68,9 +106,8 @@ void inputPassword(char password[]) {
 
 bool regis(usr users[], int *jumlahUser) {
     if (*jumlahUser >= MAX_USER) return 0;
-
     char username[MAX_LENGTH], password[MAX_LENGTH];
-    printf("Masukkan username baru: ");
+    printf("Masukkan username baru : ");
     fgets(username, MAX_LENGTH, stdin);
     username[strcspn(username, "\n")] = '\0';
 
@@ -87,6 +124,7 @@ bool regis(usr users[], int *jumlahUser) {
 
     strcpy(users[*jumlahUser].username, username);
     strcpy(users[*jumlahUser].password, password);
+    saveUserToFile(users[*jumlahUser]);
     (*jumlahUser)++;
     return 1;
 }
@@ -197,9 +235,9 @@ void kalkulasiUang() {
     }
 }
 
-int menulogin();
+int menulogin(usr users[MAX_USER], int *jumlahUser);
 
-void menuNasabah() {
+void menuNasabah(usr users[], int *jumlahUser) {
     int pilihan;
     do {
         printf("_____________________________\n");
@@ -234,7 +272,7 @@ void menuNasabah() {
             printf("|Terimakasih Sudah Melakukan Transaksi Bersama Kami|\n");
             printf("|__________________________________________________|\n");
             system("pause");
-            menulogin();
+            menulogin(users, jumlahUser);
                 break;
             default:
                 printf("Pilihan tidak valid.\n");
@@ -243,9 +281,7 @@ void menuNasabah() {
 }
 
 
-int menulogin() {
-    usr users[MAX_USER];
-    int jumlahUser = 0;
+int menulogin(usr users[], int *jumlahUser) {
     int milih;
     bool ulang = 1;
 
@@ -268,7 +304,7 @@ int menulogin() {
         switch (milih) {
             case 1:
             system("cls");
-                if (regis(users, &jumlahUser)) {
+                if (regis(users, jumlahUser)) {
                     printf("Registrasi User Baru Berhasil\n");
                 } else {
                     printf("Registrasi gagal, username sudah dipakai.\n");
@@ -277,12 +313,12 @@ int menulogin() {
                 break;
             case 2:
             system("cls");
-                if (login(users, &jumlahUser)) {
+                if (login(users, jumlahUser)) {
                     printf("Login berhasil\n");
                     system("pause");
                     system("cls");
                     ulang = 0;
-                    menuNasabah();
+                    menuNasabah(users, jumlahUser);
                 } else {
                     printf("Login gagal, username atau password salah.\n");
                     system("pause");
@@ -304,6 +340,9 @@ int menulogin() {
 }
 
 int main() {
-    menulogin();
+    usr users[MAX_USER];
+    int jumlahUser = 0;
+    LoadUserFromFile(users, &jumlahUser);
+    menulogin(users, &jumlahUser);
     return 0;
 }
