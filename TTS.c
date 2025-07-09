@@ -147,7 +147,6 @@ void tambahNasabah() {
     }
 
     printf("Masukkan nama nasabah: ");
-    getchar();
     fgets(daftarNasabah[jumlahNasabah].nama, sizeof(daftarNasabah[jumlahNasabah].nama), stdin);
     daftarNasabah[jumlahNasabah].nama[strcspn(daftarNasabah[jumlahNasabah].nama, "\n")] = '\0';
 
