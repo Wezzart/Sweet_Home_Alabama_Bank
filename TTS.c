@@ -9,7 +9,6 @@
 #define MAKS_NASABAH 100
 #define FILE_NAME "userlogin.txt"
 
-
 typedef struct {
     char username[MAX_LENGTH];
     char password[MAX_LENGTH];
@@ -37,6 +36,7 @@ void saveUserToFile(usr newUser) {
     fprintf(file, "%s;%s\n", newUser.username, newUser.password);
     fclose(file);
 }
+
 void LoadUserFromFile(usr users[], int *jumlahUser){
     FILE *file = fopen(FILE_NAME,"r");
     if(file == NULL){
@@ -57,14 +57,10 @@ void LoadUserFromFile(usr users[], int *jumlahUser){
             strcpy(users[*jumlahUser].password, password_load);
             (*jumlahUser)++;
         }
-        else{
-            printf("Satu baris data dalam file tidak lengkap, dilompati");
-        }
     }
-
     fclose(file);
-    
 }
+
 void namaDev(){
     dev inputData[] = {
         {"Made Khanaya Dew Astawa", 672024085},
@@ -74,10 +70,8 @@ void namaDev(){
         {"Mikhael Pasco Evanmada", 672024163}
     };
 
-    for(int i = 0; i < 5; i++)
-    {
+    for(int i = 0; i < 5; i++) {
         printf ("Developer %d \n Nama: %s \n NIM: %d \n", i+1, inputData[i].namaDeveloper, inputData[i].nim);
-
     }
 }
 
@@ -102,7 +96,6 @@ void inputPassword(char password[]) {
         }
     }
 }
-
 
 bool regis(usr users[], int *jumlahUser) {
     if (*jumlahUser >= MAX_USER) return 0;
@@ -147,7 +140,6 @@ bool login(usr users[], int *jumlahUser) {
     return 0;
 }
 
-
 void tambahNasabah() {
     if (jumlahNasabah >= MAKS_NASABAH) {
         printf("Kapasitas penuh!\n");
@@ -163,6 +155,65 @@ void tambahNasabah() {
     jumlahNasabah++;
 
     printf("Nasabah berhasil ditambahkan!\n");
+}
+
+void updateNasabah() {
+    if (jumlahNasabah == 0) {
+        printf("Belum ada nasabah untuk diupdate.\n");
+        return;
+    }
+
+    printf("Pilih nasabah yang ingin diupdate:\n");
+    for (int i = 0; i < jumlahNasabah; i++) {
+        printf("%d. %s\n", i + 1, daftarNasabah[i].nama);
+    }
+
+    int index;
+    printf("Masukkan nomor nasabah: ");
+    scanf("%d", &index);
+    getchar();
+    index--;
+
+    if (index < 0 || index >= jumlahNasabah) {
+        printf("Nomor tidak valid!\n");
+        return;
+    }
+
+    printf("Masukkan nama baru: ");
+    fgets(daftarNasabah[index].nama, sizeof(daftarNasabah[index].nama), stdin);
+    daftarNasabah[index].nama[strcspn(daftarNasabah[index].nama, "\n")] = '\0';
+
+    printf("Nama nasabah berhasil diupdate.\n");
+}
+
+void hapusNasabah() {
+    if (jumlahNasabah == 0) {
+        printf("Belum ada nasabah untuk dihapus.\n");
+        return;
+    }
+
+    printf("Pilih nasabah yang ingin dihapus:\n");
+    for (int i = 0; i < jumlahNasabah; i++) {
+        printf("%d. %s\n", i + 1, daftarNasabah[i].nama);
+    }
+
+    int index;
+    printf("Masukkan nomor nasabah: ");
+    scanf("%d", &index);
+    getchar();
+    index--;
+
+    if (index < 0 || index >= jumlahNasabah) {
+        printf("Nomor tidak valid!\n");
+        return;
+    }
+
+    for (int i = index; i < jumlahNasabah - 1; i++) {
+        daftarNasabah[i] = daftarNasabah[i + 1];
+    }
+    jumlahNasabah--;
+
+    printf("Nasabah berhasil dihapus.\n");
 }
 
 void kalkulasiUang() {
@@ -191,35 +242,23 @@ void kalkulasiUang() {
 
     system("cls");
     printf("_____________________________\n");
-        printf("|_________Transaksi_________|\n");
-        printf("|                           |\n");
-        printf("|1. Setor Uang              |\n");
-        printf("|2. Tarik Uang              |\n");
-        printf("|___________________________|\n");
+    printf("|_________Transaksi_________|\n");
+    printf("|1. Setor Uang              |\n");
+    printf("|2. Tarik Uang              |\n");
+    printf("|___________________________|\n");
     printf("Pilih Transaksi: ");
-           if (scanf("%d", &pilih) == 0) {
-            printf("Input salah, silahkan input 1-3\n");
-            pilih = 0;
-            system("pause");
-            
-           }
-           while (getchar() != '\n');
+    scanf("%d", &pilih);
+    while (getchar() != '\n');
 
     switch (pilih) {
         case 1:
-            system("cls");
-            printf("(       Setor Uang      )\n");
-            printf(" Jumlah setor: Rp ");
+            printf("Jumlah setor: Rp ");
             scanf("%f", &jumlah);
             daftarNasabah[index].saldo += jumlah;
             printf("Setoran berhasil. Saldo sekarang: Rp %.2f\n", daftarNasabah[index].saldo);
-            system("pause");
-            system("cls");
             break;
         case 2:
-            system("cls");
-            printf("(       Tarik Uang      )\n");
-            printf(" Jumlah tarik: Rp ");
+            printf("Jumlah tarik: Rp ");
             scanf("%f", &jumlah);
             if (jumlah > daftarNasabah[index].saldo) {
                 printf("Saldo tidak cukup!\n");
@@ -227,12 +266,12 @@ void kalkulasiUang() {
                 daftarNasabah[index].saldo -= jumlah;
                 printf("Penarikan berhasil. Saldo sekarang: Rp %.2f\n", daftarNasabah[index].saldo);
             }
-            system("pause");
-            system("cls");
             break;
         default:
             printf("Pilihan tidak valid.\n");
     }
+    system("pause");
+    system("cls");
 }
 
 int menulogin(usr users[MAX_USER], int *jumlahUser);
@@ -242,44 +281,64 @@ void menuNasabah(usr users[], int *jumlahUser) {
     do {
         printf("_____________________________\n");
         printf("|__________Nasabah__________|\n");
-        printf("|1. Tambah Nama Nasabah     |\n");
+        printf("|1. Kelola Data Nasabah     |\n");
         printf("|2. Kalkulasi               |\n");
         printf("|3. Logout                  |\n");
         printf("|___________________________|\n");
-        printf("Masukkan PIlihan Anda : ");
-        if (scanf("%d", &pilihan) == 0) {
-            printf("Input salah, silahkan input 1-3\n");
-            pilihan = 0;
-            system("pause");
-        }
+        printf("Masukkan Pilihan Anda : ");
+        scanf("%d", &pilihan);
         while (getchar() != '\n');
 
         switch (pilihan) {
-            case 1:
-                system("cls");
-                tambahNasabah();
-                system("pause");
+            case 1: {
+                int subPilihan;
+                do {
+                    system("cls");
+                    printf("_______________________________\n");
+                    printf("|______Kelola Nasabah_________|\n");
+                    printf("|1. Tambah Nasabah            |\n");
+                    printf("|2. Update Nama Nasabah       |\n");
+                    printf("|3. Hapus Nasabah             |\n");
+                    printf("|4. Kembali ke Menu Utama     |\n");
+                    printf("|_____________________________|\n");
+                    printf("Masukkan Pilihan Anda: ");
+                    scanf("%d", &subPilihan);
+                    while (getchar() != '\n');
+
+                    switch (subPilihan) {
+                        case 1:
+                            system("cls");
+                            tambahNasabah();
+                            system("pause");
+                            break;
+                        case 2:
+                            system("cls");
+                            updateNasabah();
+                            system("pause");
+                            break;
+                        case 3:
+                            system("cls");
+                            hapusNasabah();
+                            system("pause");
+                            break;
+                    }
+                } while (subPilihan != 4);
                 system("cls");
                 break;
+            }
             case 2:
                 system("cls");
                 kalkulasiUang();
-                system("cls");
                 break;
             case 3:
-            system("cls");
-            printf("____________________________________________________\n");
-            printf("|Terimakasih Sudah Melakukan Transaksi Bersama Kami|\n");
-            printf("|__________________________________________________|\n");
-            system("pause");
-            menulogin(users, jumlahUser);
+                system("cls");
+                printf("Terima kasih telah menggunakan program ini.\n");
+                system("pause");
+                menulogin(users, jumlahUser);
                 break;
-            default:
-                printf("Pilihan tidak valid.\n");
         }
     } while (pilihan != 3);
 }
-
 
 int menulogin(usr users[], int *jumlahUser) {
     int milih;
@@ -293,17 +352,13 @@ int menulogin(usr users[], int *jumlahUser) {
         printf("|2. Login                |\n");
         printf("|3. Exit                 |\n");
         printf("|________________________|\n");
-        printf("Masukkan PIlihan Anda : ");
-        if (scanf("%d", &milih) == 0) {
-            printf("Input salah, silahkan input 1-3\n");
-            milih = 0;
-            system("pause");
-        }
+        printf("Masukkan Pilihan Anda : ");
+        scanf("%d", &milih);
         while (getchar() != '\n');
 
         switch (milih) {
             case 1:
-            system("cls");
+                system("cls");
                 if (regis(users, jumlahUser)) {
                     printf("Registrasi User Baru Berhasil\n");
                 } else {
@@ -312,7 +367,7 @@ int menulogin(usr users[], int *jumlahUser) {
                 system("pause");
                 break;
             case 2:
-            system("cls");
+                system("cls");
                 if (login(users, jumlahUser)) {
                     printf("Login berhasil\n");
                     system("pause");
@@ -322,7 +377,6 @@ int menulogin(usr users[], int *jumlahUser) {
                 } else {
                     printf("Login gagal, username atau password salah.\n");
                     system("pause");
-                    system("cls");
                 }
                 break;
             case 3:
@@ -331,11 +385,8 @@ int menulogin(usr users[], int *jumlahUser) {
                 system("pause");
                 ulang = 0;
                 break;
-            default:
-                printf("Pilihan tidak valid.\n");
         }
     }
-
     return 0;
 }
 
