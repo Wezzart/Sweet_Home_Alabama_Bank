@@ -215,12 +215,27 @@ void hapusNasabah() {
     printf("Nasabah berhasil dihapus.\n");
 }
 
+void Boobies(){
+    Nasabah temp;
+    for (int i = 0; i < jumlahNasabah - 1; i++) {
+        for (int j = 0; j < jumlahNasabah - 1 - i; j++) {
+            if (strcmp(daftarNasabah[j].nama, daftarNasabah[j + 1].nama) > 0) {
+                temp = daftarNasabah[j];
+                daftarNasabah[j] = daftarNasabah[j + 1];
+                daftarNasabah[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
 void DataNasabah() {
     if (jumlahNasabah <= 0) {
         printf("\nBelum ada data Nasabah.\n");
-        system("pause");
         return;
     }
+
+    Boobies();
 
     printf("\nData Nasabah:\n");
     printf("------------------------------\n");
