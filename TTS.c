@@ -215,6 +215,22 @@ void hapusNasabah() {
     printf("Nasabah berhasil dihapus.\n");
 }
 
+void DataNasabah() {
+    if (jumlahNasabah <= 0) {
+        printf("\nBelum ada data Nasabah.\n");
+        system("pause");
+        return;
+    }
+
+    printf("\nData Nasabah:\n");
+    printf("------------------------------\n");
+    for (int i = 0; i < jumlahNasabah; i++) {
+        printf("Nasabah %d\n", i + 1);
+        printf("Nama: %s\n", daftarNasabah[i].nama);
+        printf("------------------------------\n");
+    }
+}
+
 void kalkulasiUang() {
     if (jumlahNasabah == 0) {
         printf("Belum ada nasabah terdaftar.\n");
@@ -296,9 +312,10 @@ void menuNasabah(usr users[], int *jumlahUser) {
                     printf("_______________________________\n");
                     printf("|______Kelola Nasabah_________|\n");
                     printf("|1. Tambah Nasabah            |\n");
-                    printf("|2. Update Nama Nasabah       |\n");
-                    printf("|3. Hapus Nasabah             |\n");
-                    printf("|4. Kembali ke Menu Utama     |\n");
+                    printf("|2. Tampilkan Nasabah         |\n");
+                    printf("|3. Update Nama Nasabah       |\n");
+                    printf("|4. Hapus Nasabah             |\n");
+                    printf("|5. Kembali ke Menu Utama     |\n");
                     printf("|_____________________________|\n");
                     printf("Masukkan Pilihan Anda: ");
                     scanf("%d", &subPilihan);
@@ -312,16 +329,21 @@ void menuNasabah(usr users[], int *jumlahUser) {
                             break;
                         case 2:
                             system("cls");
-                            updateNasabah();
+                            DataNasabah();
                             system("pause");
                             break;
                         case 3:
+                            system("cls");
+                            updateNasabah();
+                            system("pause");
+                            break;
+                        case 4:
                             system("cls");
                             hapusNasabah();
                             system("pause");
                             break;
                     }
-                } while (subPilihan != 4);
+                } while (subPilihan != 5);
                 system("cls");
                 break;
             }
@@ -392,6 +414,7 @@ int menulogin(usr users[], int *jumlahUser) {
 int main() {
     usr users[MAX_USER];
     int jumlahUser = 0;
+    int jumlahNasabah = 0;
     LoadUserFromFile(users, &jumlahUser);
     menulogin(users, &jumlahUser);
     return 0;
