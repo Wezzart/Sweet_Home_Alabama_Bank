@@ -231,6 +231,36 @@ void DataNasabah() {
     }
 }
 
+void search() {
+    if (jumlahNasabah == 0) {
+        printf("Belum ada nasabah untuk dicari.\n");
+        return;
+    }
+
+    char cariNama[MAX_LENGTH];
+    printf("Masukkan nama nasabah yang ingin dicari: ");
+    fgets(cariNama, MAX_LENGTH, stdin);
+    cariNama[strcspn(cariNama, "\n")] = '\0';
+
+    bool ditemukan = false;
+    printf("\nHasil pencarian untuk '%s':\n", cariNama);
+    printf("------------------------------\n");
+    for (int i = 0; i < jumlahNasabah; i++) {
+
+        if (strstr(daftarNasabah[i].nama, cariNama) != NULL) {
+            printf("Nasabah %d\n", i + 1);
+            printf("Nama: %s\n", daftarNasabah[i].nama);
+            printf("Saldo: Rp %.2f\n", daftarNasabah[i].saldo);
+            printf("------------------------------\n");
+            ditemukan = true;
+        }
+    }
+
+    if (!ditemukan) {
+        printf("Nasabah dengan nama '%s' tidak ditemukan.\n", cariNama);
+    }
+}
+
 void kalkulasiUang() {
     if (jumlahNasabah == 0) {
         printf("Belum ada nasabah terdaftar.\n");
@@ -314,8 +344,9 @@ void menuNasabah(usr users[], int *jumlahUser) {
                     printf("|1. Tambah Nasabah            |\n");
                     printf("|2. Tampilkan Nasabah         |\n");
                     printf("|3. Update Nama Nasabah       |\n");
-                    printf("|4. Hapus Nasabah             |\n");
-                    printf("|5. Kembali ke Menu Utama     |\n");
+                    printf("|4. Cari Nasabah              |\n");
+                    printf("|5. Hapus Nasabah             |\n");
+                    printf("|6. Kembali ke Menu Utama     |\n");
                     printf("|_____________________________|\n");
                     printf("Masukkan Pilihan Anda: ");
                     scanf("%d", &subPilihan);
@@ -339,11 +370,16 @@ void menuNasabah(usr users[], int *jumlahUser) {
                             break;
                         case 4:
                             system("cls");
+                            search();
+                            system("pause");
+                            break;
+                        case 5:
+                            system("cls");
                             hapusNasabah();
                             system("pause");
                             break;
                     }
-                } while (subPilihan != 5);
+                } while (subPilihan != 6);
                 system("cls");
                 break;
             }
